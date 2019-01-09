@@ -1,0 +1,60 @@
+<h5>{{title}}</h5>
+<a routerLink="/home"><h1>BLACK JACK</h1></a>
+<br>
+
+<div class="row">
+	<div class="col-md-6 center" *ngIf="message">
+		 <h4>{{message}}</h4>	<!--class="alert alert-success" -->
+	</div>
+</div>
+
+<div id="deck" *ngIf="showDeck">
+
+	<div class="intro-position">
+		<span id="player">Player Score: <label>{{playerScore}}</label> </span>
+		<span id="dealer">Dealer Score: <label>{{isPlayerStand ? dealerScore :  '?'}}</label></span>
+	</div>
+
+	<div class="row"> 
+		<br><br>
+		<div class="col-md-1 offset-sm-1 card-box" *ngFor="let playerCard of playerCards">
+			<label class="float-left card-content">{{playerCard}}</label>
+			<br><br><br>
+			<h3 class="text-center card-content">{{playerCard}}</h3>
+			<br><br>
+			<label class="float-right card-content">{{playerCard}}</label>
+		</div>
+	</div>
+	<div class="row top-buffer" *ngIf="dealerCards.length > 0">
+		<div class="col-md-1 offset-sm-1 card-box-dealer card-content" >
+			<label class="float-left card-content">{{dealerCards[0]}}</label>
+			<br><br><br>
+			<h3 class="text-center card-content">{{dealerCards[0]}}</h3>
+			<br><br>
+			<label class="float-right card-content">{{dealerCards[0]}}</label>
+		</div>
+		<div class="col-md-1 offset-sm-1 card-box-dealer card-content" >
+			<label class="float-left card-content">{{isPlayerStand ? dealerCards[1] : '?'}}</label>
+			<br><br><br>
+			<h3 class="text-center card-content">{{isPlayerStand ? dealerCards[1] : '?'}}</h3>
+			<br><br>
+			<label class="float-right card-content">{{isPlayerStand ? dealerCards[1] : '?'}}</label>
+		</div>
+		<div class="col-md-1 offset-sm-1 card-box-dealer card-content" *ngFor="let dealerCard of dealerCardsAdditional">
+			<label class="float-left card-content">{{dealerCard}}</label>
+			<br><br><br>
+			<h3 class="text-center card-content">{{dealerCard}}</h3>
+			<br><br>
+			<label class="float-right card-content">{{dealerCard}}</label>
+		</div>
+	</div>
+	
+</div>
+
+<div class="text-center">
+	<br>
+	<button type="button "class="btn btn-lg btn-success" (click)="deal()" *ngIf="dealShow">Deal</button>&nbsp;
+	<button type="button" class="btn btn-lg btn-info" (click)="hit()" *ngIf="hitShow">Hit</button>&nbsp;
+	<button type="button" class="btn btn-lg btn-danger" (click)="stand()" *ngIf="standShow">Stand</button>
+</div>
+<br><br>

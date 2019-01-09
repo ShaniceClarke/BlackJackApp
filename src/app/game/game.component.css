@@ -1,0 +1,21 @@
+.card-box {
+	border-radius: 5px 5px 5px 5px;
+	-moz-border-radius: 10px 10px 10px 10px;
+	-webkit-border-radius: 10px 10px 10px 10px;
+	border:3px solid #f4a742;/*#a397a3;*/
+}
+.card-box-dealer {
+	border-radius: 5px 5px 5px 5px;
+	-moz-border-radius: 10px 10px 10px 10px;
+	-webkit-border-radius: 10px 10px 10px 10px;
+	border:3px solid #803380;
+}
+.center {
+     float: none;
+     margin-left: auto;
+     margin-right: auto;
+}
+.card-content{
+	color: #FFFFFF;
+}
+.top-buffer { margin-top:20px; }
