@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, of, timer } from 'rxjs';
+import { finalize, expand, take } from 'rxjs/Operators';
 
 @Component({
   selector: 'app-game',
@@ -90,7 +91,6 @@ export class GameComponent implements OnInit {
 	public stand(): void {
 	  	this.isPlayerStand = true;
 	  	this.checkDealerStand();
-		this.chooseWinner();
 	}
 
   	/**
@@ -137,14 +137,20 @@ export class GameComponent implements OnInit {
     * Dealer stands when their score is between 17 and 21, otherwise hits.
     * Checks if dealer stands or hits
     */
-	public checkDealerStand(): void {
+	public async checkDealerStand() {
+
+		//TODO: Find a way to pause after every !isDealerStanding check without async await
+		//and promise setTimeout sleep
+		//but with some observerable operator instead
 
 	  	if(this.dealerScore >= 17 && this.dealerScore <= 21){
 	  		this.isDealerStanding = true;
+	  		this.chooseWinner();
 	  		return;
 	  	}
 	  	else if (this.dealerScore > 21)
 	  	{
+	  		this.chooseWinner();
 	  		return;
 	  	}
 	  	else
@@ -152,12 +158,18 @@ export class GameComponent implements OnInit {
 	  		if(!this.isDealerStanding)
 		  	{
 		  		var value = this.getRandomCard();
-				this.dealerCardsAdditional.push(value);
-				this.dealerScore += value;
-			}
+		  		this.dealerCardsAdditional.push(value);
+				this.dealerScore += value;	
+			}	
+			await this.sleep(1200);		
 			return this.checkDealerStand();
 	  	}
 	}
+
+	sleep(ms) {
+	  return new Promise(resolve => setTimeout(resolve, ms));
+	}
+
 
 	/**
 	 * Chooses the winner based on each score
@@ -166,11 +178,11 @@ export class GameComponent implements OnInit {
 
 		if(this.playerScore > 21 && this.dealerScore <= 21)
 		{
-			this.message = "You Bust! Dealer Wins!!!!";
+			this.message = "You Bust! Dealer Wins!!";
 		}
 		else if(this.playerScore <= 21 && this.dealerScore > 21)
 		{
-			this.message = "Dealer Bust!!! You Win!!!!!";
+			this.message = "Dealer Bust!!! You Win!!";
 		} 
 		else if(this.playerScore > 21  && this.dealerScore > 21)
 		{
@@ -178,11 +190,11 @@ export class GameComponent implements OnInit {
 		}
 		else if(this.playerScore == 21)
 	 	{
-	 		this.message = "You win!!";
+	 		this.message = "Black Jack! You win!!";
 	 	}
 	 	else if(this.dealerScore == 21)
 	 	{
-	 		this.message = "Dealer wins!!";
+	 		this.message = "Black Jack! Dealer wins!!";
 	 	}
 	 	else if(this.playerScore < 21 && this.dealerScore < 21)
 	 	{
@@ -221,5 +233,18 @@ export class GameComponent implements OnInit {
   // 		}
   //   });
   // }
+
+	  // 		var times = timer(500);
+  // 		times.pipe(finalize(() => {
+  // 			if(this.dealerScore >= 17 && this.dealerScore <= 21){
+  // 				this.chooseWinner();
+  // 			}else if (this.dealerScore > 21){
+  // 				this.chooseWinner();
+  // 			}
+  // 		}))
+  // 		.subscribe(() => {				  		
+		// 	this.dealerCardsAdditional.push(value);
+		// 	this.dealerScore += value;
+		// });
 
 }
